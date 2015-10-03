@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="ctiCpDemo">
+<head>
+  <meta charset="UTF-8">
+  <title>CTi Color Picker demo</title>
+  <link href="src/default.css" rel="stylesheet">
+  <link href="demo/demo.css" rel="stylesheet">
+</head>
+<body ng-controller="MainCtrl as main">
+  <div class="cp-color-display"
+       id="cp-color-display"
+       ng-click="main.logData()"
+  >
+  </div>
+  <div cti-color-picker="main.colorData"></div>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/hammerjs/hammer.js"></script>
+  <script src="src/ctiColorPicker.js"></script>
+  <script src="demo/demo.js"></script>
+</body>
+</html>
