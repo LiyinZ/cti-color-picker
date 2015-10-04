@@ -29,7 +29,7 @@
     //
     var directive = {
       // TODO replace templateUrl with template
-      templateUrl: 'src/ctiColorPicker.html',
+      templateUrl: './src/ctiColorPicker.html',
       bindToController: true,
       controller: ColorPickerCtrl,
       controllerAs: 'cp',

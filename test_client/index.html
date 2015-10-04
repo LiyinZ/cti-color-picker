@@ -2,9 +2,10 @@
 <html lang="en" ng-app="ctiCpDemo">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
   <title>CTi Color Picker demo</title>
-  <link href="src/default.css" rel="stylesheet">
-  <link href="demo/demo.css" rel="stylesheet">
+  <link href="dist/ctiColorPicker.css" rel="stylesheet">
+  <link href="client.css" rel="stylesheet">
 </head>
 <body ng-controller="MainCtrl as main">
   <div class="cp-color-display"
@@ -13,9 +14,10 @@
   >
   </div>
   <div cti-color-picker="main.colorData"></div>
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/hammerjs/hammer.js"></script>
-  <script src="src/ctiColorPicker.js"></script>
-  <script src="demo/demo.js"></script>
+  <!-- bower:js -->
+  <!-- endbower -->
+  <script src="dist/ctiColorPicker.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
+
