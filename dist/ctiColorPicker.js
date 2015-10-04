@@ -29,7 +29,7 @@
     //
     var directive = {
       // TODO replace templateUrl with template
-      templateUrl: './src/ctiColorPicker.html',
+      template: '<span class=cti-cp-circle></span> <span class=cti-cp-bar></span><canvas class=cti-canvas-square>Your browser does not support the HTML5 canvas tag.</canvas><canvas class=cti-canvas-strip height=60>Your browser does not support the HTML5 canvas tag.</canvas>',
       bindToController: true,
       controller: ColorPickerCtrl,
       controllerAs: 'cp',
