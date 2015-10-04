@@ -8,19 +8,21 @@ var autoprefixer = require('gulp-autoprefixer');
 var csso = require('gulp-csso');
 var directiveReplace = require('gulp-directive-replace');
 var wiredep = require('wiredep').stream;
+var replace = require('gulp-replace');
+var cdnizer = require('gulp-cdnizer');
 
 var baseName = 'ctiColorPicker';
 var jsSrc = baseName + '.js';
 var cssSrc = baseName + '.css';
-var tmpPath = './.tmp';
 
-gulp.task('serve', ['tmpjs', 'bower', 'ccss', 'js', 'css'], function() {
+gulp.task('serve', ['bower', 'ccss', 'js', 'css'], function() {
   browserSync.init({
     server: {
-      baseDir: './.tmp',
+      baseDir: './test_client',
       routes: {
         "/bower_components": "bower_components",
-        "/dist": "dist"
+        "/dist": "dist",
+        "/test_client": "test_client"
       }
     }
   });
@@ -28,8 +30,6 @@ gulp.task('serve', ['tmpjs', 'bower', 'ccss', 'js', 'css'], function() {
   gulp.watch('./src/*.css', ['css']);
   gulp.watch(['./src/*.html', './src/*.js'], ['js']);
   gulp.watch('./test_client/client.css', ['ccss']);
-  gulp.watch('./test_client/index.html', ['bower']);
-  gulp.watch('./test_client/app.js', ['tmpjs']);
   gulp.watch('./bower.json', ['bower']);
   gulp.watch([
     './src/*.html',
@@ -52,22 +52,16 @@ gulp.task('css', function() {
     .pipe(browserSync.stream());
 });
 
-gulp.task('tmpjs', function() {
-  return gulp.src('./test_client/*.js')
-    .pipe(gulp.dest(tmpPath));
-});
-
 gulp.task('bower', function() {
   return gulp.src('./test_client/index.html')
-    .pipe(wiredep())
-    .pipe(gulp.dest(tmpPath));
+    .pipe(wiredep({ ignorePath: '../' }))
+    .pipe(gulp.dest('./test_client'));
 });
 
 gulp.task('ccss', function() {
   return gulp.src('./test_client/client.css')
     .pipe(autoprefixer())
     .pipe(gulp.dest('./test_client'))
-    .pipe(gulp.dest(tmpPath))
     .pipe(browserSync.stream());
 });
 
@@ -85,5 +79,22 @@ gulp.task('minify', ['css'], function() {
     .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('dist', ['uglify', 'minify']);
+gulp.task('demo', ['ccss'], function() {
+  gulp.src('./test_client/app.js')
+    .pipe(gulp.dest('./demo'));
+  gulp.src('./test_client/client.css')
+    .pipe(gulp.dest('./demo'));
+  return gulp.src('./test_client/index.html')
+    .pipe(replace('test_client', 'demo'))
+    .pipe(cdnizer([
+      'google:angular',
+      {
+        file: 'bower_components/hammerjs/hammer.js',
+        cdn: '//hammerjs.github.io/dist/hammer.min.js'
+      }
+    ]))
+    .pipe(gulp.dest('./demo'));
+});
+
+gulp.task('dist', ['uglify', 'minify', 'demo']);
 gulp.task('default', ['serve']);
